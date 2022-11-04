@@ -1,0 +1,87 @@
+
+Pseudocode
+
+1 Define required constants
+1.1 Define colors object with keys of null, and players 1 & -1.  Set ‘1’’s value to ‘black’, and ‘-1’’s value to ‘red’, and ‘null’ to ‘lightgray’
+1.2 Define winning condition: opponent has no more remaining piece (E.g. ‘piecesRed’.numPieces = 0) OR opponent has no more move
+1.3 Define maxPieces each player has (12 pieces)
+
+2 Define required variables used to track the state of the game
+2.1 Define a board array (array of 64 elements for the 8 x 8 board)
+2.2 Define a turn variable to remember whose turn it is
+2.3 Define a winner variable to represent 3 different possibilities - (Black player (‘1’) wins OR Red player (‘-1’) wins OR no winner yet or tie (“null”)
+2.4 Define a class representing pieces that includes the following properties:
+2.4.1 player (1 or -1)
+2.4.2 color (red or black)
+2.4.3 selectedIdx (index of the piece selected)
+2.5 Define blackPieces variable to represent the object for the black pieces
+2.6 Define redPieces variable to represent the object for the red pieces
+2.7 Define a class representing players that includes the following properties:
+2.7.1 player (1 or -1)
+2.7.2 playerColor (red or black)
+2.7.3 remainingNum (any number between 1 to 12; to be initialized at maxPieces or 12)
+2.7.4 remainingIndices (array of indices of the remaining pieces)
+2.7.5 availableMoves array of indices move available when player’s checker is clicked
+landingIndex (index of the square a piece will be landing)
+2.8 Define playerPos variable to represent the object for player ‘1’
+2.9 Define playerNeg variable to represent the object for player ‘-1’
+
+3 Store DOM elements on the page
+3.1 Store the 64 (8 x 8) ‘board’ elements that represent the squares on the page
+3.2 Store the ‘turn’ element that represent the turn
+3.3 Store the ‘replay’ element that represent the replay button
+3.4 Store the ‘scoreboard’ elements that represent the scoreboard showing each player’s score
+3.5 Store the ‘black pieces’ elements that represent the available black pieces
+3.6 Store the ‘red pieces’ elements that represent the available red pieces
+3.7 Store the ‘movable’ elements that represent pieces that can make a move
+3.8 Store the ‘piece selected’ element that represent the piece selected
+3.9 Store the ‘available move’ elements that represent the squares the selected pieces can be moved into
+3.10 Store the ‘landing’ element that represent the square the selected piece will be moved into
+
+4 Upon loading the app should:
+4.1 Initialize the state variable
+4.1.1 Initialize the board array to 64 nulls
+4.1.2 Initialize turn to 1 (player ‘Black’)
+4.1.3 Initialize winner to null to represent there is no winner yet
+4.1.4 Initialize playerPos and playerNeg with the following properties and values
+4.1.4.1 Set player property to 1 or -1
+4.1.4.2 Set player color = ‘black’ or ‘red’
+4.1.4.3 Set number of pieces to 12 (max pieces)
+4.1.4.4 Set remaining pieces to indices of square where the pieces should be located
+4.1.4.5 Set selected piece selected to null
+4.1.4.6 Set available move to empty array
+4.1.4.7 Set landing index to null
+4.2 Render those state variables to the page
+4.2.1 Render the board
+4.2.2 Render each of the black and red pieces available
+4.2.3 Render effects (e.g. highlight) for movable pieces
+4.2.4 Render effects for available moves
+4.2.5 Render effects for selected piece
+4.2.6 Render the turn message
+4.2.7 Render the scoreboard
+4.2.8 Render effect on pieces that is able to move
+4.3 Wait for the user to click a square or piece
+
+5 Handle a player clicking a piece
+5.1 Obtain the index of the piece clicked
+5.2 If the player property of the piece clicked is not the player’s turn, immediately return
+5.3 If it is not one of the player’s movable piece, immediately return
+5.4 Set the player’s selected piece with the index of the piece clicked
+5.5 Calculate available moves, and set availableMoves array to the calculated result
+5.6 All state has been updated, so render the state to the page (step 4b)
+
+6 Handle a player clicking a square
+6.1 Obtain the index of the square clicked
+6.2 If the square clicked is not one of the indices in the available moves array properties in the players object, immediately return
+6.3 Set the landing index
+6.4 Update number of remaining pieces
+6.5 Update indices of remaining pieces
+6.6 Updated available moves to null
+6.7 Update the board array at the index with the value of turn
+6.8 Flip turns by multiplying turn by -1
+6.9 Set the selected index to null;
+6.10 Set the winner variable if there is a winner
+6.11 All state has been updated, so render the state to the page (step 4b)
+
+7. Handle a player clicking the replay button
+7.1 Do step 4a (initialize the state variables) and 4.2 (render)
