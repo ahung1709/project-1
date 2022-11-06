@@ -1,8 +1,22 @@
 body {
     display: grid;
-    grid-template-columns: 1fr 4fr;
-    grid-template-rows: 
     background-color: lightblue;
+    grid-template-rows: 50px 1fr;
+    grid-template-columns: 1fr 4fr;
+    height: 100vh;
+    margin: 0; 
+    /* display:inline; */
+    
+}
+
+/* Styles for nav bar */
+nav {
+    grid-column: 1/3;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; /* default */
+    height: 50px;
+    background-color: lightyellow;
 }
 
 h1 {
@@ -10,12 +24,171 @@ h1 {
     text-align:center;
 }
 
-.square {
-    width: 50px;
+/* Styles for elements in sidebar */
+div#sidebar {
+    width: 200px;
+    background-color: gray;
+    /* display: flex;
+    justify-content: flex-start; */
+    /* position: relative; */
+    /* float: right; */
+    /* display: flex; */
+    /* align-content: right; */
+    align-items: right;
+
+}
+
+div#replay {
+    width: 150px;
     height: 50px;
+    font-family: sans-serif;
+    font-size:2em;
+    background-color:lightcoral;
+    text-align: center;
+    margin: 5px auto;
+}
+
+/* Styles for main */
+div#content {
+    width:600px;
+    margin: 5px auto;
+    background-color: lightsteelblue;
+}
+
+/* Styles for message board */
+div#msgboard {
+    width: 500px; 
+    height: 50px;
+    font-family: sans-serif;
+    font-size:30px;
+    text-align: center;
     border: 1px solid black;
+    margin: 5px auto;
+    background-color: lightyellow;
+}
+
+div#gameWithScore {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 64px 1fr;
+    /* align-items: right; */
+    /* width: */
+}
+
+/* Styles for scoreboard */
+div#scoreboard {
+    /* display:flex;
+    justify-content: right; */
+    position: relative;
+    float: right;
+    padding:0;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: blanchedalmond;
+    margin:10px;
+    width:40px;
+}
+
+#negScoreBox, #posScoreBox {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    /* border: 1px solid black; */
+    font-size: 20px;
+}
+
+#negScoreBox {
+    color: red;
+}
+
+.scores {
+        /* display: table-cell;
+    width: 20px;
+    height: 20px;
+    padding: 1px;
+    border: 3px dashed #1c87c9;
+    vertical-align: middle; */
+    /* display:flex;
+    justify-content: center; */
+    /* display: table-cell;
+    vertical-align: middle; */
+    /* display: block; */
+    /* text-align: center; */
+}
+
+/* #negScoreBox {
+    display: table-cell;
+    vertical-align: middle;
+} */
+
+/* Styles for game board */
+div#gameboard {
+    background-color:#d7cac1;
+    width: 520px; 
+    height: 520px;
+    margin: 10px auto;
+    position: relative;
+    float: left;
+    /* border: 2px solid #855E42; */
+    /* border: 2px outset #cdbdb1;
+    border-radius: 5px; */
+    /* outline: 0.5rem solid khaki; */
+    /* box-shadow: 0 0 0 5px #855E42; */
+    /* display: table-cell;
+    vertical-align: middle; */
+    display:flex;
+    justify-content: center;
+    
+
+}
+
+div#boardInnerBorder {
+    width: 480px;
+    height: 480px;
+    /* background-color: blue; */
+    margin: 5px auto;
+    border: 2px solid #855E42;
+    border-radius: 5px;
+    /* display:flex;
+    justify-content: center; */
+}
+
+.square {
+    /* background-color: #d7cac1; */
+    /* opacity: .6; */
+    width: 60px;
+    height: 60px;
+    /* border: 1px solid black; */
+}
+
+.darksq {
+    background-color: #9D7E68;
+    /* opacity: .9; */
 }
 
 .row {
     display: flex;
 }
+
+.flex-ctr {
+    /* display: flex;
+    justify-content: center; */
+    align-items: center;
+    /* background-color: brown; */
+
+}
+
+/* .middle {
+
+} */
+
+/* .vertical-ctr {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+ */
