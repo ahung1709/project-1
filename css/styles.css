@@ -1,6 +1,7 @@
 body {
     display: grid;
-    background-color: lightblue;
+    /* background-color: lightblue; */
+    background-color: lightsteelblue;
     grid-template-rows: 50px 1fr;
     grid-template-columns: 1fr 4fr;
     height: 100vh;
@@ -26,7 +27,7 @@ h1 {
 
 /* Styles for elements in sidebar */
 div#sidebar {
-    width: 200px;
+    /* width: 200px; */
     background-color: gray;
     /* display: flex;
     justify-content: flex-start; */
@@ -34,7 +35,7 @@ div#sidebar {
     /* float: right; */
     /* display: flex; */
     /* align-content: right; */
-    align-items: right;
+    /* align-items: right; */
 
 }
 
@@ -49,10 +50,19 @@ div#replay {
 }
 
 /* Styles for main */
+
+div#main {
+    /* position: relative;
+    float: left; */
+}
+
 div#content {
     width:600px;
-    margin: 5px auto;
+    /* height: 100vh; */
+    margin: 0 auto;
     background-color: lightsteelblue;
+    position: relative;
+    float: left;
 }
 
 /* Styles for message board */
@@ -103,7 +113,7 @@ div#scoreboard {
     color: red;
 }
 
-.scores {
+.bothScore {
         /* display: table-cell;
     width: 20px;
     height: 20px;
@@ -124,7 +134,7 @@ div#scoreboard {
 } */
 
 /* Styles for game board */
-div#gameboard {
+div#outerGameboard {
     background-color:#d7cac1;
     width: 520px; 
     height: 520px;
@@ -144,7 +154,7 @@ div#gameboard {
 
 }
 
-div#boardInnerBorder {
+div#gameboard {
     width: 480px;
     height: 480px;
     /* background-color: blue; */
@@ -161,6 +171,9 @@ div#boardInnerBorder {
     width: 60px;
     height: 60px;
     /* border: 1px solid black; */
+    /* margin: 0 auto; */
+    display: grid;
+    align-items: center;
 }
 
 .darksq {
@@ -170,6 +183,42 @@ div#boardInnerBorder {
 
 .row {
     display: flex;
+    /* display: grid; */
+}
+
+/* Styles for black pieces and red pieces */
+.piece {
+    width: 55px;
+    height: 55px;
+    background-color: yellow;
+    color: white;
+    text-align: center;
+    /* vertical-align: middle; */
+    /* padding: 5px 5px; */
+    display: inline-block;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: grid;
+    align-items: center;
+}
+
+.blackPiece {
+    background-color: black;
+    /* opacity: 1; */
+}
+
+.redPiece {
+    background-color: red;
+    /* opacity: 1; */
+}
+
+.pieceSq {
+    width:60px;
+    height:60px;
+    background-color:transparent;
+    /* opacity: 0.5; */
+    display: grid;
+    align-items: center;
 }
 
 .flex-ctr {
