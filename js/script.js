@@ -165,8 +165,8 @@ function init() {
   
   // initialize gameboard
   
-  // board = getStandardScenario(0)
-  board = getSpecialScenario(0)
+  board = getStandardScenario(0)
+  // board = getSpecialScenario(0)
 
   // initialize turn
   turn = 1 // start with player '1'
