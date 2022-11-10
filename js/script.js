@@ -6,22 +6,26 @@ const colors = {
 }
 
 /*----- app's state (variables) -----*/
-let board = []
+let board = [] // track coordineate of each player's pieces
 
-let score = []
+let score = [] // track score of each player
 
-let turn
+let turn // track turn
 
-let winner
+let winner // track winner
 
-let selectedCoords
-let landingCoords
+let selectedCoords // track coordinate selected by player
+let landingCoords // track landing coordinate chosen by player
 
-let arrAllLandableCoords
+let arrAllLandableCornerCoords // track all immediate landable corners
+let arrAllLandableJumpCoords // track all landable jumps Inot including immediate corners)
+let arrAllLandableCoords // track all landalbe corners or jumps
 
 /*----- cached element references -----*/
 let gameboardEl = document.getElementById('gameboard')
 let squaresEl = document.querySelectorAll('.square')
+let pieceSqsEl = document.querySelectorAll('.pieceSq')
+
 let scoreEl = document.querySelectorAll('.bothScore')
 let selectedEl = null;
 let msgboardEl = document.getElementById('msgboard')
@@ -33,7 +37,6 @@ gameboardEl.addEventListener('click', handleClick)
 function handleClick(evt) {
   let clickedEl = evt.target
 
-  // console.log(clickedEl)
   let isSq = clickedEl.classList.contains('square')
   let isPieceSq = clickedEl.classList.contains('pieceSq')
   let isPiece = clickedEl.classList.contains('piece')
@@ -44,17 +47,17 @@ function handleClick(evt) {
   if (!(isSq || isPieceSq || isPiece || isPieceLabel)) return
 
   // retrieve coordinates of the selected piece or square
-  let strCoords = []
+  let strClickedCoords = []
   let clickedSqEl
   if (isSq) clickedSqEl = clickedEl
   if (isPieceSq) clickedSqEl = clickedEl.parentElement
   if (isPiece) clickedSqEl = clickedEl.parentElement.parentElement
   if (isPieceLabel) clickedSqEl = clickedEl.parentElement.parentElement.parentElement
-  strCoords = clickedSqEl.id.split('-')
+  strClickedCoords = clickedSqEl.id.split('-')
   
   // turn coordinates from array of strings into array of numbers
-  let numCoords = []
-  strCoords.forEach((strCoord) => numCoords.push(parseInt(strCoord, 10)))
+  let numClickedCoords = []
+  strClickedCoords.forEach((strCoord) => numClickedCoords.push(parseInt(strCoord, 10)))
 
   if (!selectedCoords) { // no piece has yet been selected
     
@@ -62,26 +65,35 @@ function handleClick(evt) {
     if (!clickedSqEl.firstElementChild.firstElementChild) return
 
     // the piece cannot be selected, so immediately return
-    if (!(board[numCoords[0]][numCoords[1]][0] === turn)) return 
+    if (!(board[numClickedCoords[0]][numClickedCoords[1]][0] === turn)) return 
     
-    selectedCoords = numCoords
-    arrAllLandableCoords = findAllLandableCoords(selectedCoords)   
+    selectedCoords = numClickedCoords
+    arrAllLandableCoords = findAllLandableCoords(selectedCoords) 
 
   } else { // a piece has already been selected
     
-    landingCoords = numCoords
-
-    // deselect selected coords and immediately return if the landing square cannot be landed into
-    if (!containsCoords(arrAllLandableCoords, landingCoords)) {
-      selectedCoords = null  
-      return
+    landingCoords = numClickedCoords
+    
+    // if the landing coordinate selected by player is not landable
+    if (!containsCoords(arrAllLandableCoords, landingCoords)) { 
+      // if the coordinate clicked is coordinate of the player's own piece
+      if (board[numClickedCoords[0]][numClickedCoords[1]][0] === turn) {
+        selectedCoords = numClickedCoords
+        arrAllLandableCoords = findAllLandableCoords(selectedCoords)   
+      } else { // the coordinate clicked is not coordinate of the player's own piece
+        // deselect selected coords and immediately return
+        selectedCoords = null
+        landingCoords = null 
+      }
+    } 
+    else { // the landing coordinate selected by player is landable
+    
+      // move the piece from selected coordinate to landing coordinate
+      movePiece(selectedCoords, landingCoords)
+      
+      // change turn; turn can only be changed if a piece is moved
+      turn *=-1
     }
-    
-    // move the piece from selected coordinate to landing coordinate
-    movePiece(selectedCoords, landingCoords)
-    
-    // change turn
-    turn *=-1
   }
 
   // set winner if there is a winner
@@ -135,13 +147,16 @@ function movePiece(selCoords, landCoords) {
   }
 }
 
-
+// return true if a a landing coordinate is immediate corner to the selected coordinate
+// otherwise return false
 function isImmediateCornerCoords(selCoords, landCoords) {
   let rDiff = landCoords[0] - selCoords[0]
   let sDiff = landCoords[1] - selCoords[1]
   return (Math.abs(rDiff) === 1 && Math.abs(sDiff) === 1)
 }
 
+// return true if a landing coordinate is further corner to the selected coordinate
+// otherwise return false
 function isFurtherCornerCoords(selCoords, landCoords) {
   let rDiff = landCoords[0] - selCoords[0]
   let sDiff = landCoords[1] - selCoords[1]
@@ -163,8 +178,7 @@ function init() {
   // initialize scoreboard
   score = [0,0]
   
-  // initialize gameboard
-  
+  // initialize gameboard  
   board = getStandardScenario(0)
   // board = getSpecialScenario(0)
 
@@ -173,6 +187,15 @@ function init() {
 
   // initialize winner
   winner = null; // null represent no winner or tie yet
+
+  // initialize selected coordinate and landing coordinate to be selected by player
+  selectedCoords = null // null represent no coordinate is selected
+  landingCoords = null // null represent no landing coordinate is chosen
+
+  // initialize landable coordinates
+  arrAllLandableCornerCoords = null
+  arrAllLandableJumpCoords = null
+  arrAllLandableCoords = null // null represent there is no landable coordinate to a selected coordinate
 }
 
 function render() {
@@ -181,20 +204,43 @@ function render() {
   board.forEach(function(row, rIdx) {
     row.forEach(function(square, sIdx) {
       let squareEl = document.getElementById(`${rIdx}-${sIdx}`).firstElementChild
-      if (board[rIdx][sIdx][0] !== 0) { // the square is not empty
-        if (!!squareEl.firstElementChild) { // if there is a piece in the square
-          squareEl.removeChild(squareEl.childNodes[0])
-        }
+      
+      // clear the board: if there is a piece in the square, remove the piece
+      if (squareEl.firstElementChild) squareEl.removeChild(squareEl.childNodes[0])
+
+      if (board[rIdx][sIdx][0] !== 0) { // if the board square coordinate is not empty (0)
+        // create pieces for each of the players
         let piece = createPiece(board[rIdx][sIdx])
         squareEl.appendChild(piece)
-      } else { // the square is empty
-        if (squareEl.firstElementChild) { // there is already a piece in the square
-          squareEl.removeChild(squareEl.childNodes[0])
+      } 
+    })
+  })
+
+  // render piece selection effect when a piece is selected  
+  board.forEach(function(row, rIdx) {
+    row.forEach(function(square, sIdx) {
+      let pieceSqEl = document.getElementById(`${rIdx}-${sIdx}`).firstElementChild
+      
+      // remove all previously set classes (effects) from a square
+      pieceSqEl.classList.remove("selectedPieceSq", "landableCornerSq", "landableJumpsq") 
+      // pieceSqEl.classList.remove("landableCornerSq")
+      // pieceSqEl.classList.remove("landableJumpsq")
+      
+      // set classes (effects) to a square if it is selected
+      if (!!selectedCoords) {// if a coordinate is selected
+        if (isSameCoords([rIdx, sIdx], selectedCoords)) {
+          pieceSqEl.classList.add("selectedPieceSq")
+        }
+        if (containsCoords(arrAllLandableCornerCoords, [rIdx, sIdx])) {
+          pieceSqEl.classList.add("landableCornerSq")
+        }
+        if (containsCoords(arrAllLandableJumpCoords, [rIdx, sIdx])) {
+          pieceSqEl.classList.add("landableJumpsq")  
         }
       }
     })
   })
-
+  
   // render message board
   let displayMsg = ""
   if (winner === null) {
@@ -224,14 +270,14 @@ function createPiece(sq) {
   // create label on piece
   let pieceLabel = document.createElement("div")
   pieceLabel.classList.add("pieceLabel")
+  pieceLabel.classList.add("noTextSelection")
   if (sq[1] === 'K') {
     let textCrown = document.createTextNode("👑").textContent;
     pieceLabel.textContent=`${sq[0]} ${textCrown}`
   } else {
     pieceLabel.textContent=`${sq[0]} ${sq[1]}`
   }
-  pieceLabel.style.fontFamily = "sans-serif"
-    
+      
   // create piece
   let piece = document.createElement("div")
   piece.appendChild(pieceLabel)
@@ -244,21 +290,12 @@ function createPiece(sq) {
 
 function findAllLandableCoords(selCoords) {
   let allLandableCoords = []
-  let player = board[selCoords[0]][selCoords[1]][0]
-  let king = board[selCoords[0]][selCoords[1]][1] 
 
-  // get all four corner coordinates of the selected coordinate
-  let arrCornersCoords = getAllCornerCoords(selCoords)
+  // find all landable corner coordinates for a selected piece
+  arrAllLandableCornerCoords = findAllLandableCornerCoords(selCoords)
 
-  // filter for all inside-of-gameboard coordinates (effectively remove all out-all-gameboard coordinates) 
-  arrCornersCoords = filterInBoardCoords(arrCornersCoords)
-
-  // remove coordinates that contain one of player's pieces
-  arrCornersCoords = removePlayerPieceCoords(arrCornersCoords, turn)
-  
-  // get all the empty coordinate and assign it to a new array 
-  // provided that the ipnut array of corner is cleaned up
-  let arrEmptyCoords = filterAllEmptyCoords(arrCornersCoords)
+  // find all immediate corners of selected coordinate that does not contain pieces of a specific player
+  let arrCornersCoords = findAllEmptyOrOpponentCornerCoords(selCoords)
 
   // get all coordinates that contain opponent's piece, and assign it to a new array
   // provided that the ipnut array of corner is cleaned up
@@ -270,25 +307,68 @@ function findAllLandableCoords(selCoords) {
 
   // remove all out-of-gameboard coordinates in the array of further coordinate
   arrClosestJumpCoords = filterInBoardCoords(arrClosestJumpCoords)
-  // console.log(arrClosestJumpCoords)
 
   // filter for empty coordinates in the array of further coordinates
   arrClosestJumpCoords = filterAllEmptyCoords(arrClosestJumpCoords)
 
-  allLandableCoords = [...arrEmptyCoords, ...arrClosestJumpCoords];
+  arrClosestJumpCoords = filterAllForwardMovesCoords(arrClosestJumpCoords, selCoords)
+
+  arrAllLandableJumpCoords = arrClosestJumpCoords
+
+  allLandableCoords = [...arrAllLandableCornerCoords, ...arrAllLandableJumpCoords];
+
+  return allLandableCoords
+}
+
+// return an array of all landable corner coordinates that are empty 
+// or contain opponent's piece of a coordinate of a player's piece
+function findAllEmptyOrOpponentCornerCoords(selCoords) {
+  // get all four corner coordinates of the selected coordinate
+  let arrCornersCoords = getAllCornerCoords(selCoords)
+
+  // filter for all inside-of-gameboard coordinates (effectively remove all out-all-gameboard coordinates) 
+  arrCornersCoords = filterInBoardCoords(arrCornersCoords)
+
+  // remove coordinates that contain one of player's pieces
+  arrCornersCoords = removePlayerPieceCoords(arrCornersCoords, turn)  
+
+  return arrCornersCoords
+}
+
+// return an array of all landable (empty) diagonal coordinate to a coordinate of a player's piece
+function findAllLandableCornerCoords(selCoords) {
+  let allLandableEmptyCoords = []
+
+  let arrCornersCoords = findAllEmptyOrOpponentCornerCoords(selCoords)
+
+  // get all the empty coordinate and assign it to a new array 
+  // provided that the ipnut array of corner is cleaned up
+  allLandableEmptyCoords = filterAllEmptyCoords(arrCornersCoords)
+
+  // filter array of coordiantes of moves for only forward moves for a player
+  allLandableEmptyCoords = filterAllForwardMovesCoords(allLandableEmptyCoords, selCoords)
+
+  return allLandableEmptyCoords
+}
+
+function filterAllForwardMovesCoords(arrCoords, selCoords) {
+  let player = board[selCoords[0]][selCoords[1]][0]
+  let king = board[selCoords[0]][selCoords[1]][1]
+
+  // filter for all forward coordinates (upward for player '1' 
+  // and downward for player '-1') if the selected coordinate is not king
   if (king != 'K') {
     if (player === 1) {
-      allLandableCoords = allLandableCoords.filter(function(landableCoords) {
-        return landableCoords[0] < selectedCoords[0]
+      arrCoords = arrCoords.filter(function(landableCoords) {
+        return landableCoords[0] < selCoords[0]
       })
     } else if (player === -1) {
-      allLandableCoords = allLandableCoords.filter(function(landableCoords) {
-        return landableCoords[0] > selectedCoords[0]
+      arrCoords = arrCoords.filter(function(landableCoords) {
+        return landableCoords[0] > selCoords[0]
       })
     }
   }
-
-  return allLandableCoords
+  return arrCoords
 }
 
 // remove an excluded coordinate from array of coordinates
@@ -302,7 +382,6 @@ function removeCoords(arrCoords, excludedCoords) {
 
 // return true if two coordinates are the same, otherwise return false
 function isSameCoords(aCoords, bCoords) {
-  console.log((aCoords[0] === bCoords[0] && aCoords[1] === bCoords[1]))
   return (aCoords[0] === bCoords[0] && aCoords[1] === bCoords[1])
 }
 
@@ -488,4 +567,3 @@ function getSpecialScenario(idxScenario) {
 
 init()
 render()
-

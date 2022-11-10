@@ -159,6 +159,29 @@ div#gameboard {
     align-items: center;
 }
 
+.selectedPieceSq {
+    background-color: #fbec5d; /* Maize */
+}
+
+.landableCornerSq {
+    background-color: #28A828;
+}
+
+.landableJumpsq {
+    background-color: #EE4B2B; /* Bright Red */
+}
+
+.pieceLabel {
+    font-family: sans-serif;
+}
+
+.noTextSelection {
+    /* disallow text selection */
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
 .flex-ctr {
     display: flex;
     justify-content: center;
