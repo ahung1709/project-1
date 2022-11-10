@@ -222,9 +222,7 @@ function render() {
       let pieceSqEl = document.getElementById(`${rIdx}-${sIdx}`).firstElementChild
       
       // remove all previously set classes (effects) from a square
-      pieceSqEl.classList.remove("selectedPieceSq", "landableCornerSq", "landableJumpsq") 
-      // pieceSqEl.classList.remove("landableCornerSq")
-      // pieceSqEl.classList.remove("landableJumpsq")
+      pieceSqEl.classList.remove("selectedPieceSq", "landableCornerSq", "landableJumpsq")
       
       // set classes (effects) to a square if it is selected
       if (!!selectedCoords) {// if a coordinate is selected
