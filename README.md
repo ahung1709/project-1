@@ -9,16 +9,16 @@
 * Win: You win once all opponent's pieces are captured, and lose once all your own pieces are captured. (see Screenshot #4 below for a win)
 
 ### Screenshots
-#### Initial setting
+#### Screenshot #1 - Initial setting
 ![Screenshot #1](https://i.imgur.com/tMjl3Wo.png)
 
-#### A piece is selected, and possible moves are highlighted
+#### Screenshot #2 - A piece is selected, and possible moves are highlighted
 ![Screenshot #2](https://i.imgur.com/tcOf42n.png)
 
-#### A piece turn to a king piece, and it can move backwards
+#### Screenshot #3 - A piece turn to a king piece, and it can move backwards
 ![Screenshot #3](https://i.imgur.com/zYXdEWR.png)
 
-#### All pieces of player 'red' is captured, and player 'black' wins
+#### Screenshot #4 - All pieces of player 'red' is captured, and player 'black' wins
 ![Screenshot #4](https://i.imgur.com/Dm6sXYA.png)
 
 ### Technologies Used
