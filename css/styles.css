@@ -173,6 +173,7 @@ div#gameboard {
 
 .pieceLabel {
     font-family: sans-serif;
+    font-size: 40px
 }
 
 .noTextSelection {

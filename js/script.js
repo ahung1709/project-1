@@ -242,9 +242,9 @@ function render() {
   // render message board
   let displayMsg = ""
   if (winner === null) {
-    displayMsg = `${turn} (${colors[turn]})'s Turn`;
+    displayMsg = `Turn for player '${colors[turn]}'`;
   } else {
-    displayMsg = `Congratulations! Winner is ${winner} (${colors[winner]})`;
+    displayMsg = `Congratulations! Winner is player '${colors[winner]}'`;
   }
   msgboardEl.textContent = displayMsg
 
@@ -269,11 +269,15 @@ function createPiece(sq) {
   let pieceLabel = document.createElement("div")
   pieceLabel.classList.add("pieceLabel")
   pieceLabel.classList.add("noTextSelection")
+  
   if (sq[1] === 'K') {
     let textCrown = document.createTextNode("👑").textContent;
-    pieceLabel.textContent=`${sq[0]} ${textCrown}`
+    pieceLabel.textContent=`${textCrown}`
+    // pieceLabel.textContent=`${sq[0]} ${textCrown}`
   } else {
-    pieceLabel.textContent=`${sq[0]} ${sq[1]}`
+    let textNormal = document.createTextNode("❀").textContent;
+    pieceLabel.textContent=`${textNormal}`
+    // pieceLabel.textContent=`${sq[0]} ${sq[1]}`
   }
       
   // create piece
