@@ -107,7 +107,6 @@ function handleClick(evt) {
 
   // render the board at the end
   render();
-  
 }
 
 replayEl.addEventListener('click', function(evt) {
@@ -129,7 +128,8 @@ function movePiece(selCoords, landCoords) {
   else {
     board[landCoords[0]][landCoords[1]][1] = board[selCoords[0]][selCoords[1]][1]
   }
-  
+
+  // set the coordinate that the piece jumped from back to status that represent empty square
   board[selCoords[0]][selCoords[1]][0] = 0
   board[selCoords[0]][selCoords[1]][1] = 'N'
   selectedCoords = null
@@ -180,8 +180,7 @@ function init() {
   
   // initialize gameboard  
   board = getStandardScenario(0)
-  // board = getSpecialScenario(0)
-
+  
   // initialize turn
   turn = 1 // start with player '1'
 
@@ -200,7 +199,6 @@ function init() {
 
 function render() {
   // render pieces
-  let firstChild
   board.forEach(function(row, rIdx) {
     row.forEach(function(square, sIdx) {
       let squareEl = document.getElementById(`${rIdx}-${sIdx}`).firstElementChild
@@ -216,7 +214,7 @@ function render() {
     })
   })
 
-  // render piece selection effect when a piece is selected  
+  // render piece selection effect when a piece is selected
   board.forEach(function(row, rIdx) {
     row.forEach(function(square, sIdx) {
       let pieceSqEl = document.getElementById(`${rIdx}-${sIdx}`).firstElementChild
@@ -499,69 +497,6 @@ function getStandardScenario(idxScenario) {
       [[1, "N"], [0, "N"], [1, "N"], [0, "N"], [1, "N"], [0, "N"], [1,"N"], [0, "N"]],
       [[0, "N"], [1, "N"], [0, "N"], [1, "N"], [0, "N"], [1, "N"], [0, "N"], [1, "N"]],
       [[1, "N"], [0, "N"], [1, "N"], [0, "N"], [1, "N"], [0, "N"], [1, "N"], [0, "N"]],
-    ], 
-    [
-      [[0,"K"], [-1, "K"], [0, "K"], [-1, "K"], [0, "K"], [-1, "K"], [0, "K"], [-1, "K"]],
-      [[-1, "K"], [0, "K"], [-1, "K"], [0, "K"], [-1, "K"], [0, "K"], [-1, "K"], [0, "K"]],
-      [[0, "K"], [-1, "K"], [0, "K"], [-1, "K"], [0, "K"], [-1, "K"], [0, "K"], [-1, "K"]],
-      [[0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[1, "K"], [0, "K"], [1, "K"], [0, "K"], [1, "K"], [0, "K"], [1,"K"], [0, "K"]],
-      [[0, "K"], [1, "K"], [0, "K"], [1, "K"], [0, "K"], [1, "K"], [0, "K"], [1, "K"]],
-      [[1, "K"], [0, "K"], [1, "K"], [0, "K"], [1, "K"], [0, "K"], [1, "K"], [0, "K"]],
-  ]
-
-  ]
-  return scenario[idxScenario]
-}
-
-
-
-function getSpecialScenario(idxScenario) {
-  let scenario = [
-    // Scenario '0' for testing winner
-    [
-      [[0,"K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "N"], [0, "N"], [0, "K"], [0, "K"], [0, "N"], [0, "N"], [0, "N"], [0, "N"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [-1, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [1,"K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-    ], 
-    // Scenario for consecutive jump case #1
-    [
-      [[0,"K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [-1, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "N"], [0, "N"], [-1, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [-1, "K"], [0, "K"], [-1,"K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [1, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-    ], 
-    // Scenario for consecutive jump case #2
-    [
-      [[0,"K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [-1, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "N"], [0, "N"], [-1, "N"], [0, "K"], [-1, "N"], [0, "N"], [-1, "N"], [0, "N"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [-1, "K"], [0, "K"], [-1,"K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [1, "K"], [0, "K"], [0, "K"]],
-      [[0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"], [0, "K"]],
-    ], 
-    // Scenario for turning 'Normal' piece to a 'King' piece
-    [
-      [[0,"N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"]],
-      [[0, "N"], [0, "N"], [0, "N"], [0, "N"], [1, "N"], [0, "N"], [0, "N"], [0, "N"]],
-      [[0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"]],
-      [[0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"]],
-      [[0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"]],
-      [[0, "K"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0,"N"], [0, "N"]],
-      [[0, "N"], [0, "N"], [0, "N"], [-1, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"]],
-      [[0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"], [0, "N"]],
     ]
   ]
   return scenario[idxScenario]
