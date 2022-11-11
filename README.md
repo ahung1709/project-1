@@ -9,10 +9,10 @@
 * Win: You win once all opponent's pieces are captured, and lose once all your own pieces are captured. (see Screenshot #4 below for a win)
 
 ### Screenshots
-* ![Screenshot #1](link to screenshot)
-* ![Screenshot #2](link to screenshot)
-* ![Screenshot #3](link to screenshot)
-* ![Screenshot #4](https://i.imgur.com/Qvoc8NR.png)
+* ![Screenshot #1](https://i.imgur.com/tMjl3Wo.png)
+* ![Screenshot #2](https://i.imgur.com/tcOf42n.png)
+* ![Screenshot #3](https://i.imgur.com/zYXdEWR.png)
+* ![Screenshot #4](https://i.imgur.com/Dm6sXYA.png)
 
 ### Technologies Used
 * HTML
