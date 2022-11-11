@@ -12,7 +12,7 @@
 * ![Screenshot #1](link to screenshot)
 * ![Screenshot #2](link to screenshot)
 * ![Screenshot #3](link to screenshot)
-* ![Screenshot #4](https://github.com/ahung1709/project-1/tree/main/screenshots/screenshot4.png)
+* ![Screenshot #4](https://i.imgur.com/Qvoc8NR.png)
 
 ### Technologies Used
 * HTML
